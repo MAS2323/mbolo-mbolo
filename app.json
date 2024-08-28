@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "mbolo-app",
+    "slug": "mbolo-app-nuevo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.onewemas.mboloappnuevo",
+      "permissions": []
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "scheme": "mboloapp",
+    "extra": {
+      "eas": {
+        "projectId": "d59164c7-fdc6-49b1-b508-0fb87df07c1f"
+      },
+      "API_BASE_URL": "https://backend-mbolo.onrender.com"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
+  }
+}
