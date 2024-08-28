@@ -36,12 +36,6 @@ const validationSchema = Yup.object().shape({
     .required("Requerido"),
 });
 
-const GoogleLoginButton = ({ promptAsync }) => (
-  <TouchableOpacity style={styles.googleButton} onPress={promptAsync}>
-    <Text style={styles.googleButtonText}>Login with Google</Text>
-  </TouchableOpacity>
-);
-
 const InputField = ({
   icon,
   placeholder,

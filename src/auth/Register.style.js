@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../Components/constants";
-import { height } from "deprecated-react-native-prop-types/DeprecatedImagePropType";
 
 
 const styles = StyleSheet.create({
@@ -11,7 +10,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
     flex: 1,
   },
-  mboloContainer: {},
   mboloText: {
     textAlign: "center",
     fontSize: 70,
@@ -141,14 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  radioButton_title: {
-    fontSize: 20,
-    color: "#4c86A8",
-  },
-  radioButton_text: {
-    fontSize: 16,
-    color: "black",
-  },
   errorMessage: {
     color: COLORS.red,
     fontSize: SIZES.xSmall,
@@ -164,30 +154,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: COLORS.gray,
   },
-  googleButton: {
-    backgroundColor: COLORS.primary,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 50,
-    borderRadius: 25,
-    marginTop: 20,
-  },
   buttonText: {
     fontSize: 18,
     color: COLORS.white,
     fontWeight: "bold",
-  },
-  radioButton_div: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  radioButton_inner_div:{
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   radioButton_title: {
     fontSize: 20,

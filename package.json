@@ -12,8 +12,6 @@
     "@expo/html-elements": "^0.10.1",
     "@expo/vector-icons": "^14.0.2",
     "@react-native-async-storage/async-storage": "1.23.1",
-    "@react-native-community/google-signin": "^5.0.0",
-    "@react-native-google-signin/google-signin": "^12.2.1",
     "@react-native-picker/picker": "2.7.5",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/drawer": "^6.6.15",
@@ -73,8 +71,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.79",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.3.3"
+    "ts-node": "^10.9.2"
   },
   "private": true,
   "author": "",

@@ -28,9 +28,9 @@ const SubCategoryDetails = () => {
   const renderHeader = () => (
     <View>
       <View style={styles.upperRow}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back-circle" size={30} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <Image source={{ uri: subcategory.image }} style={styles.image} />
       <View style={styles.details}>
