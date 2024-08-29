@@ -22,7 +22,7 @@ import { Fontisto } from "@expo/vector-icons";
 import { COLORS, SIZES} from "../../Components/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import MenuScreen from "../../Components/Home/MenuScreen";
-import TendenciasScreen from "../categorias/TendenciasScreen";
+import TendenciasScreen from "../../Components/Home/TendenciasScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HomeScreen() {

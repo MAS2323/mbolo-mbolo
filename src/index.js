@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import Toast, { ErrorToast } from "react-native-toast-message";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,7 +12,6 @@ import {
   LoginPage,
   RegisterPage,
   AddScreen,
-  MessageScreen,
   PerfilScreen,
   UpdateProfile,
   HomeScreen,
@@ -41,53 +40,6 @@ import {
 
 const UserContext = React.createContext();
 export { UserContext };
-
-// Configuración de Toast
-const toastConfig = {
-  success: (props) => (
-    <BaseToast
-      {...props}
-      style={{
-        borderLeftColor: "green",
-        borderLeftWidth: 7,
-        width: "90%",
-        height: 70,
-        borderRightColor: "green",
-        borderRightWidth: 7,
-      }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
-      text1Style={{
-        fontSize: 17,
-        fontWeight: "700",
-      }}
-      text2Style={{
-        fontSize: 14,
-      }}
-    />
-  ),
-  error: (props) => (
-    <ErrorToast
-      {...props}
-      text2NumberOfLines={3}
-      style={{
-        borderLeftColor: "red",
-        borderLeftWidth: 7,
-        width: "90%",
-        height: 70,
-        borderRightColor: "red",
-        borderRightWidth: 7,
-      }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
-      text1Style={{
-        fontSize: 17,
-        fontWeight: "700",
-      }}
-      text2Style={{
-        fontSize: 14,
-      }}
-    />
-  ),
-};
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -387,11 +339,6 @@ export default function App() {
             headerTintColor: "#333",
           })}
         />
-        <Stack.Screen name="Messages">
-          {(props) => (
-            <MessageScreen {...props} userId1="user1_id" userId2="user2_id" />
-          )}
-        </Stack.Screen>
       </Stack.Navigator>
     );
   };
@@ -401,7 +348,6 @@ export default function App() {
       <NavigationContainer>
         <UserContext.Provider value={{ isLoggedIn, userType }}>
           <LoginNav2 policyAccepted={true}/>
-          <Toast config={toastConfig} />
         </UserContext.Provider>
       </NavigationContainer>
     </GestureHandlerRootView>

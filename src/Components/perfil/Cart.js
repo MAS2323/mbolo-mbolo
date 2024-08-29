@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   RefreshControl,
+  Linking,
 } from "react-native";
 import axios from "axios";
 import { getCachedData, setCachedData } from "./cache";
@@ -15,6 +16,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { API_BASE_URL } from "../services/config";
+
 const CartScreen = () => {
   const [userId, setUserId] = useState(null);
   const [cart, setCart] = useState(null);
@@ -67,11 +69,14 @@ const CartScreen = () => {
       setCachedData(`cart_${userId}`, updatedCart);
 
       // Muestra un mensaje de éxito al usuario
-      Alert.alert("Item removed", "The item has been removed from the cart.");
+      Alert.alert("El artículo ha sido eliminado del carrito.");
     } catch (error) {
-      console.error("Error removing item from cart:", error);
+      console.error("Error al eliminar el artículo del carrito:", error);
       // Maneja el error según sea necesario
     }
+  };
+  const handleWhatsApp = (phoneNumber) => {
+    Linking.openURL(`https://wa.me/${phoneNumber}`);
   };
 
   const handleRefresh = useCallback(async () => {
@@ -86,7 +91,14 @@ const CartScreen = () => {
 
   useEffect(() => {
     fetchCart();
-  }, [fetchCart]);   
+  }, [fetchCart]);
+
+  const openWhatsApp = (number) => {
+    const url = `whatsapp://send?phone=${number}`;
+    Linking.openURL(url).catch(() =>
+      Alert.alert("Error", "No se pudo abrir WhatsApp.")
+    );
+  };
 
   if (!cart) {
     return <Text>Cargando...</Text>;
@@ -109,10 +121,22 @@ const CartScreen = () => {
             <View style={styles.infoContainer}>
               <Text style={styles.title}>{product.title}</Text>
               <Text style={styles.supplier}>Supplier: {product.supplier}</Text>
-              <Text style={styles.price}>${product.price}</Text>
-              <TouchableOpacity onPress={() => handleRemoveItem(product._id)}>
-                <MaterialIcons name="delete" size={24} color="red" />
-              </TouchableOpacity>
+              <Text style={styles.price}>XAF{product.price}</Text>
+              
+              {/* Botones para WhatsApp y eliminar */}
+              <View style={styles.actionContainer}>
+              <TouchableOpacity
+                    style={styles.whatsappButton}
+                    onPress={() =>
+                      handleWhatsApp(product.whatsapp)
+                    }
+                  >
+                    <Text style={styles.whatsappText}>WhatsApp</Text>
+                  </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleRemoveItem(product._id)}>
+                  <MaterialIcons name="delete" size={24} color="red" />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         ))
@@ -169,9 +193,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FF6347",
   },
-  quantity: {
-    fontSize: 14,
-    color: "#666",
+  actionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginTop: 10,
+    width: 100, // Ajusta el tamaño según sea necesario
   },
   button: {
     backgroundColor: "#4c86A8",
@@ -193,4 +220,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#666",
   },
+  whatsappButton: {
+    backgroundColor: "#25D366",
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  whatsappText: {
+    color: "#fff",
+    fontSize: 14,
+  }
 });

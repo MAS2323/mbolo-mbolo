@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../Components/constants";
-import TendenciasScreen from "./TendenciasScreen";
+import TendenciasScreen from "../../Components/Home/TendenciasScreen";
 import { ScrollView } from "react-native-gesture-handler";
 
 const DetallesScreen = ({ route }) => {

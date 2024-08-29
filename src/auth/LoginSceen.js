@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -123,7 +123,7 @@ const LoginPage = () => {
           <Text style={styles.mboloText}>MBOLO</Text>
         </View>
         <View style={styles.loginContainer}>
-          <Text style={styles.text_header}>Login !!!</Text>
+          <Text style={styles.text_header}>Login !!</Text>
         </View>
         <Formik
           initialValues={{ email: "", password: "" }}

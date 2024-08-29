@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const PrivacyPolicyScreen = ({ navigation }) => {
   const [accepted, setAccepted] = useState(false);
 
+  useEffect(() =>{
+    const checkIfAccepted = async () => {
+      const accepted = await AsyncStorage.getItem('privacyPolicyAccepted');
+      if (accepted) {
+        navigation.replace('HomeUi');  // Redirige al Home si ya aceptó la política
+      }
+    };
+
+    checkIfAccepted();
+  }, [])
+
   const handleAccept = async () => {
     try {
       await AsyncStorage.setItem("policyAccepted", "true");
@@ -19,6 +30,7 @@ const PrivacyPolicyScreen = ({ navigation }) => {
       console.error("Error saving acceptance:", error);
     }
   };
+  if (accepted) return null;
 
   return (
     <View style={styles.container}>

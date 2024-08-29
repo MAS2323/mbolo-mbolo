@@ -128,7 +128,7 @@ function RegisterPage() {
           <Text style={styles.mboloText}>MBOLO</Text>
         </View>
         <View style={styles.loginContainer}>
-          <Text style={styles.text_header}>Registrar!</Text>
+          <Text style={styles.text_header}>Registrar !!</Text>
         </View>
         <View style={styles.radioButton_div}>
           <Text style={styles.radioButton_title}>Registrarse como </Text>
