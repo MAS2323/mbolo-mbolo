@@ -93,13 +93,6 @@ const CartScreen = () => {
     fetchCart();
   }, [fetchCart]);
 
-  const openWhatsApp = (number) => {
-    const url = `whatsapp://send?phone=${number}`;
-    Linking.openURL(url).catch(() =>
-      Alert.alert("Error", "No se pudo abrir WhatsApp.")
-    );
-  };
-
   if (!cart) {
     return <Text>Cargando...</Text>;
   }

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.medium,
     marginVertical: SIZES.medium,
     height: 50,
-    marginHorizontal: 12
+    marginHorizontal: 12,
   },
   searchWrapper: {
     flex: 1,
