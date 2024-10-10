@@ -21,28 +21,36 @@ import { API_BASE_URL } from "../../Components/services/config";
 
 export default function AddScreen() {
   const [loader, setLoader] = useState(false);
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [userId, setUserId] = useState(null);
   const navigation = useNavigation();
 
   useEffect(() => {
     const getUserId = async () => {
       const id = await AsyncStorage.getItem("id");
-      setUserId(id?.replace(/\"/g, "") || ""); // Maneja posibles valores nulos
+      setUserId(id?.replace(/\"/g, "") || "");
     };
     getUserId();
   }, []);
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  // Selección de múltiples imágenes
+  const pickImages = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+        allowsEditing: false,
+        selectionLimit: 5,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    if (!result.canceled && result.assets?.length > 0) {
-      setImage(result.assets[0].uri);
+      if (!result.canceled && result.assets?.length > 0) {
+        const selectedImages = result.assets.map((asset) => asset.uri);
+        setImages(selectedImages);
+      }
+    } catch (error) {
+      console.error("Error seleccionando imágenes:", error);
     }
   };
 
@@ -52,8 +60,8 @@ export default function AddScreen() {
       const endpoint = `${API_BASE_URL}/products`;
       const postData = {
         ...values,
-        imageUrl: image,
-        userId: userId, // Asegúrate de que el userId esté correctamente formateado
+        images, // Guardar las imágenes seleccionadas
+        userId,
       };
 
       const response = await axios.post(endpoint, postData);
@@ -64,10 +72,7 @@ export default function AddScreen() {
         ]);
       }
     } catch (error) {
-      console.error(
-        "Error al agregar el producto:",
-        error.response?.data || error.message || error
-      );
+      console.error("Error al agregar el producto:", error.response?.data || error.message);
       Alert.alert("Error", "Hubo un error al agregar el producto");
     } finally {
       setLoader(false);
@@ -77,19 +82,13 @@ export default function AddScreen() {
   if (!userId) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>
-          Debes iniciar sesión para agregar un producto
-        </Text>
-        {/* Aquí podrías añadir un botón o componente para redirigir a la pantalla de inicio de sesión */}
+        <Text style={styles.message}>Debes iniciar sesión para agregar un producto</Text>
       </View>
     );
   }
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      behavior="padding"
-      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}>
+    <KeyboardAwareScrollView style={styles.container} behavior="padding">
       <Text style={styles.title}>Vende</Text>
       <Text style={styles.subtitle}>Crea un nuevo producto para todos</Text>
       <Formik
@@ -99,16 +98,20 @@ export default function AddScreen() {
           description: "",
           product_location: "",
           price: "",
-          imageUrl: "",
           phoneNumber: "",
           whatsapp: "",
         }}
-        onSubmit={AddPost}>
+        onSubmit={AddPost}
+      >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View>
-            <TouchableOpacity onPress={pickImage}>
-              {image ? (
-                <Image source={{ uri: image }} style={styles.image} />
+            <TouchableOpacity onPress={pickImages}>
+              {images.length > 0 ? (
+                <View style={styles.imageContainer}>
+                  {images.map((imgUri, index) => (
+                    <Image key={index} source={{ uri: imgUri }} style={styles.image} />
+                  ))}
+                </View>
               ) : (
                 <Image
                   source={require("./../../../assets/images/placeholderImage.png")}
@@ -155,7 +158,7 @@ export default function AddScreen() {
             />
             <TextInput
               style={styles.input}
-              placeholder="whatsapp"
+              placeholder="WhatsApp"
               value={values.whatsapp}
               keyboardType="number-pad"
               onChangeText={handleChange("whatsapp")}
@@ -204,6 +207,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
+    marginBottom: 20,
+  },
+  imageContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 20,
   },
 });

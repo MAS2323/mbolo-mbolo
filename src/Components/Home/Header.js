@@ -31,14 +31,14 @@ const Header = () => {
             style={styles.searchInput}
             value=""
             onPressIn={() => navigation.navigate("SearchScreen")}
-            placeholder="Todo lo que desees en un click!"
+            placeholder="Escribelo, busca y encuentralo!"
           />
         </View>
-        <View>
+        {/* <View>
           <TouchableOpacity style={styles.searchBtn}>
             <Ionicons name="camera-outline" size={SIZES.xLarge} color="black" />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
 
       <View>
