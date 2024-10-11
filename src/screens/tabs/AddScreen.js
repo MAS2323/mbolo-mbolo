@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-  SafeAreaView,
-  Text,
   View,
+  Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
   Image,
   Alert,
-  Platform,
 } from "react-native";
 import { Formik } from "formik";
 import * as ImagePicker from "expo-image-picker";
@@ -21,7 +19,7 @@ import { API_BASE_URL } from "../../Components/services/config";
 
 export default function AddScreen() {
   const [loader, setLoader] = useState(false);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // Aquí almacenaremos múltiples imágenes
   const [userId, setUserId] = useState(null);
   const navigation = useNavigation();
 
@@ -33,7 +31,7 @@ export default function AddScreen() {
     getUserId();
   }, []);
 
-  // Selección de múltiples imágenes
+  // Función para seleccionar imágenes de la galería
   const pickImages = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -47,11 +45,42 @@ export default function AddScreen() {
 
       if (!result.canceled && result.assets?.length > 0) {
         const selectedImages = result.assets.map((asset) => asset.uri);
-        setImages(selectedImages);
+        setImages((prevImages) => [...prevImages, ...selectedImages]);
       }
     } catch (error) {
       console.error("Error seleccionando imágenes:", error);
     }
+  };
+
+  // Función para capturar una foto con la cámara
+  const takePhoto = async () => {
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets?.length > 0) {
+        setImages((prevImages) => [...prevImages, result.assets[0].uri]);
+      }
+    } catch (error) {
+      console.error("Error tomando foto:", error);
+    }
+  };
+
+  // Función para mostrar el diálogo con opciones de selección
+  const showImagePickerOptions = () => {
+    Alert.alert(
+      "Seleccionar imagen",
+      "Elige una opción",
+      [
+        { text: "Seleccionar de Galería", onPress: pickImages },
+        { text: "Tomar una foto", onPress: takePhoto },
+        { text: "Cancelar", style: "cancel" },
+      ],
+      { cancelable: true }
+    );
   };
 
   const AddPost = async (values) => {
@@ -60,7 +89,7 @@ export default function AddScreen() {
       const endpoint = `${API_BASE_URL}/products`;
       const postData = {
         ...values,
-        images, // Guardar las imágenes seleccionadas
+        images, // Enviar el array de imágenes
         userId,
       };
 
@@ -72,7 +101,10 @@ export default function AddScreen() {
         ]);
       }
     } catch (error) {
-      console.error("Error al agregar el producto:", error.response?.data || error.message);
+      console.error(
+        "Error al agregar el producto:",
+        error.response?.data || error.message
+      );
       Alert.alert("Error", "Hubo un error al agregar el producto");
     } finally {
       setLoader(false);
@@ -82,7 +114,9 @@ export default function AddScreen() {
   if (!userId) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>Debes iniciar sesión para agregar un producto</Text>
+        <Text style={styles.message}>
+          Debes iniciar sesión para agregar un producto
+        </Text>
       </View>
     );
   }
@@ -105,11 +139,16 @@ export default function AddScreen() {
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View>
-            <TouchableOpacity onPress={pickImages}>
+            {/* Imagen clickeable para mostrar opciones */}
+            <TouchableOpacity onPress={showImagePickerOptions}>
               {images.length > 0 ? (
                 <View style={styles.imageContainer}>
-                  {images.map((imgUri, index) => (
-                    <Image key={index} source={{ uri: imgUri }} style={styles.image} />
+                  {images.map((images, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: images }}
+                      style={styles.image}
+                    />
                   ))}
                 </View>
               ) : (
@@ -119,6 +158,7 @@ export default function AddScreen() {
                 />
               )}
             </TouchableOpacity>
+
             <TextInput
               style={styles.input}
               placeholder="Título"
@@ -135,7 +175,7 @@ export default function AddScreen() {
             />
             <TextInput
               style={styles.input}
-              placeholder="Supplier"
+              placeholder="Proveedor"
               value={values.supplier}
               onChangeText={handleChange("supplier")}
               onBlur={handleBlur("supplier")}
@@ -150,7 +190,7 @@ export default function AddScreen() {
             />
             <TextInput
               style={styles.input}
-              placeholder="Telefono"
+              placeholder="Teléfono"
               value={values.phoneNumber}
               keyboardType="number-pad"
               onChangeText={handleChange("phoneNumber")}
@@ -213,5 +253,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 20,
+  },
+  message: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "gray",
   },
 });

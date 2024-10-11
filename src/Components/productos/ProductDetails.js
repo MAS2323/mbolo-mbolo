@@ -1,6 +1,18 @@
-import { Text, View, Image, Linking, FlatList, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Linking,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
-import { Ionicons, SimpleLineIcons, MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
+import {
+  Ionicons,
+  SimpleLineIcons,
+  MaterialCommunityIcons,
+  Fontisto,
+} from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./ProductDetails.style";
 import { COLORS } from "../constants/theme";
@@ -13,7 +25,8 @@ export default function ProductDetails() {
 
   // Incrementar y decrementar la cantidad de productos
   const handleIncrement = () => setCount((prevCount) => prevCount + 1);
-  const handleDecrement = () => setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount));
+  const handleDecrement = () =>
+    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount));
 
   // Abrir WhatsApp
   const openWhatsApp = () => {
@@ -24,7 +37,9 @@ export default function ProductDetails() {
   // Abrir el marcador telefónico
   const openPhoneDialer = () => {
     const url = `tel:${item.phoneNumber}`;
-    Linking.openURL(url).catch(() => alert("No se puede abrir el marcador telefónico"));
+    Linking.openURL(url).catch(() =>
+      alert("No se puede abrir el marcador telefónico")
+    );
   };
 
   return (
@@ -40,16 +55,23 @@ export default function ProductDetails() {
 
       {/* Muestra las imágenes del producto */}
       <FlatList
-        data={item.images} // Asegúrate de que "images" sea un array en los datos del producto
-        renderItem={({ item }) => <Image source={{ uri: item }} style={styles.image} />}
+        data={item.images} // Asegúrate de que "images" sea un array válido
+        renderItem={({ item }) =>
+          item ? ( // Verifica que la imagen no sea nula
+            <Image source={{ uri: item }} style={styles.image} />
+          ) : (
+            <Text style={{ color: "red" }}>Imagen no disponible</Text> // Renderiza un mensaje en caso de error
+          )
+        }
         keyExtractor={(item, index) => index.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
-
       <View style={styles.details}>
         <View style={styles.titleRow}>
-          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">{item.title}</Text>
+          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+            {item.title}
+          </Text>
           <View style={styles.priceWrapper}>
             <Text style={styles.price}>XAF{item.price}</Text>
           </View>
@@ -83,7 +105,11 @@ export default function ProductDetails() {
             <Text>{item.product_location}</Text>
           </View>
           <View style={styles.location}>
-            <MaterialCommunityIcons name="truck-delivery-outline" size={24} color="black" />
+            <MaterialCommunityIcons
+              name="truck-delivery-outline"
+              size={24}
+              color="black"
+            />
             <Text>Entrega gratis</Text>
           </View>
         </View>
@@ -92,7 +118,10 @@ export default function ProductDetails() {
           <TouchableOpacity onPress={() => {}} style={styles.cartBtn}>
             <Text style={styles.cartTitle}>Contactanos y compra</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("CartScreen")} style={styles.addCart}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CartScreen")}
+            style={styles.addCart}
+          >
             <Fontisto name="shopping-bag" size={22} color={COLORS.lightwhite} />
           </TouchableOpacity>
         </View>
