@@ -33,7 +33,6 @@ export default function ProductDetails() {
     const url = `whatsapp://send?phone=${item.whatsapp}`;
     Linking.openURL(url).catch(() => alert("No se puede abrir WhatsApp"));
   };
-  const imageUri = item || "ruta/de/imagen/default.png";
 
   // Abrir el marcador telefónico
   const openPhoneDialer = () => {
@@ -59,7 +58,7 @@ export default function ProductDetails() {
         data={item.images} // Asegúrate de que "images" sea un array válido
         renderItem={({ item }) =>
           item ? ( // Verifica que la imagen no sea nula
-            <Image source={{ uri: imageUri }} style={styles.image} />
+            <Image source={{ uri: item }} style={styles.image} />
           ) : (
             <Text style={{ color: "red" }}>Imagen no disponible</Text> // Renderiza un mensaje en caso de error
           )
