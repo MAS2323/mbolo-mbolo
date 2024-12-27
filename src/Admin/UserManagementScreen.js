@@ -84,7 +84,7 @@ const UserManagementScreen = () => {
               <Text style={styles.userDetails}>Mobile: {item.mobile}</Text>
               <Text style={styles.userDetails}>Email: {item.email}</Text>
               <Text style={styles.userDetails}>
-                Tipo de Usuario: {item.userType} 
+                Tipo de Usuario: {item.userType}
               </Text>
             </View>
             {item._id !== userId && (

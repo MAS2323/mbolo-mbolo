@@ -51,60 +51,59 @@ const AddSubcategoryScreen = ({ subcategoryId }) => {
     }
   };
 
-const handleSubmit = async (values, { resetForm }) => {
-  setLoader(true); // Show loader
+  const handleSubmit = async (values, { resetForm }) => {
+    setLoader(true); // Show loader
 
-  try {
-    // Validate all required fields are filled
-    if (
-      !values.name ||
-      !values.description ||
-      !values.location ||
-      !values.phoneNumber ||
-      !values.whatsapp
-    ) {
-      Alert.alert("Todos los campos son obligatorios");
-      return;
-    }
+    try {
+      // Validate all required fields are filled
+      if (
+        !values.name ||
+        !values.description ||
+        !values.location ||
+        !values.phoneNumber ||
+        !values.whatsapp
+      ) {
+        Alert.alert("Todos los campos son obligatorios");
+        return;
+      }
 
-    if (!selectedCategory) {
-      Alert.alert("Por favor, selecciona una categoría");
-      return;
-    }
+      if (!selectedCategory) {
+        Alert.alert("Por favor, selecciona una categoría");
+        return;
+      }
 
-    // Prepare the data object to send to the backend
-    const postData = {
-      name: values.name,
-      description: values.description,
-      location: values.location,
-      phoneNumber: values.phoneNumber, // Ensure phoneNumber is included
-      whatsapp: values.whatsapp,
-      category: selectedCategory,
-      image: image ? image : null,
-    };
+      // Prepare the data object to send to the backend
+      const postData = {
+        name: values.name,
+        description: values.description,
+        location: values.location,
+        phoneNumber: values.phoneNumber, // Ensure phoneNumber is included
+        whatsapp: values.whatsapp,
+        category: selectedCategory,
+        image: image ? image : null,
+      };
 
-    const endpoint = `${API_BASE_URL}/subcategories/category/${selectedCategory}`;
-    const response = await axios.post(endpoint, postData);
+      const endpoint = `${API_BASE_URL}/subcategories/category/${selectedCategory}`;
+      const response = await axios.post(endpoint, postData);
 
-    if (response.status === 201) {
-      Alert.alert("Subcategoría creada exitosamente");
-      resetForm();
-      setImage(null);
-      setSelectedCategory("");
-    } else {
+      if (response.status === 201) {
+        Alert.alert("Subcategoría creada exitosamente");
+        resetForm();
+        setImage(null);
+        setSelectedCategory("");
+      } else {
+        Alert.alert("Hubo un error al crear la subcategoría");
+      }
+    } catch (error) {
+      console.error(
+        "Error creating subcategory:",
+        error.response?.data || error.message || error
+      );
       Alert.alert("Hubo un error al crear la subcategoría");
+    } finally {
+      setLoader(false); // Hide loader
     }
-  } catch (error) {
-    console.error(
-      "Error creating subcategory:",
-      error.response?.data || error.message || error
-    );
-    Alert.alert("Hubo un error al crear la subcategoría");
-  } finally {
-    setLoader(false); // Hide loader
-  }
-};
-
+  };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Nombre es requerido"),
@@ -118,7 +117,8 @@ const handleSubmit = async (values, { resetForm }) => {
     <KeyboardAwareScrollView
       style={styles.container}
       behavior="padding"
-      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}>
+      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
+    >
       <Text style={styles.title}>Agregar Subcategoría</Text>
       <Formik
         initialValues={{
@@ -129,7 +129,8 @@ const handleSubmit = async (values, { resetForm }) => {
           whatsapp: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         {({
           handleChange,
           handleBlur,
@@ -141,7 +142,8 @@ const handleSubmit = async (values, { resetForm }) => {
           <View>
             <Picker
               selectedValue={selectedCategory}
-              onValueChange={(itemValue) => setSelectedCategory(itemValue)}>
+              onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+            >
               <Picker.Item label="Selecciona una categoría" value="" />
               {categories.map((category) => (
                 <Picker.Item

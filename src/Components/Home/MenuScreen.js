@@ -18,9 +18,7 @@ const MenuScreen = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          `${API_BASE_URL}/categories/:id`
-        );
+        const response = await axios.get(`${API_BASE_URL}/categories/:id`);
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -29,22 +27,23 @@ const MenuScreen = () => {
 
     fetchCategories();
   }, []);
-    const handleCategoryPress = async (categoryId) => {
-      try {
-        const response = await axios.get(
-          `${API_BASE_URL}/subcategories/category/${categoryId}`
-        );
-        navigation.navigate("SubcategoriesScreen", {
-          subcategories: response.data,
-        });
-      } catch (error) {
-        console.error("Error fetching subcategories:", error);
-      }
-    };
+  const handleCategoryPress = async (categoryId) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/subcategories/category/${categoryId}`
+      );
+      navigation.navigate("SubcategoriesScreen", {
+        subcategories: response.data,
+      });
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.categoryItem}
-      onPress={() => handleCategoryPress(item._id)}>
+      onPress={() => handleCategoryPress(item._id)}
+    >
       <Image source={{ uri: item.imageUrl }} style={styles.categoryImage} />
       <Text style={styles.categoryText}>{item.name}</Text>
     </TouchableOpacity>

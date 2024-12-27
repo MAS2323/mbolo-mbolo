@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../Components/constants";
 
-
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "white",
@@ -163,11 +162,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.primary,
   },
-  radioButton_text:{
+  radioButton_text: {
     fontSize: 16,
-    color: 'black'
-  }
+    color: "black",
+  },
 });
 
 export default styles;
-
